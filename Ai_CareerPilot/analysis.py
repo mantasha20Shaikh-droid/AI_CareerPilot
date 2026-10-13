@@ -1,0 +1,18 @@
+from extensions import db
+class ResumeAnalysis(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False, index=True)
+    job_title = db.Column(db.String(160), nullable=False)
+    company = db.Column(db.String(160), default='')
+    experience_level = db.Column(db.String(40), default='Entry level')
+    coverage = db.Column(db.Float, nullable=False, default=0)
+    resume_skills = db.Column(db.JSON, default=list)
+    required_skills = db.Column(db.JSON, default=list)
+    matched_skills = db.Column(db.JSON, default=list)
+    missing_skills = db.Column(db.JSON, default=list)
+    strengths = db.Column(db.JSON, default=list)
+    improvements = db.Column(db.JSON, default=list)
+    projects = db.Column(db.JSON, default=list)
+    resume_text = db.Column(db.Text, default='')
+    created_at = db.Column(db.DateTime, server_default=db.func.now())
+    user = db.relationship('User', backref=db.backref('analyses', lazy=True, cascade='all, delete-orphan'))
